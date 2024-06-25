@@ -3,10 +3,10 @@
 ## Setup
 
 - [X] Deploy en Vercel
-- [ ] Shadcn install
+- [X] Shadcn install
 - [X] Postgres Vercel database
 - [ ] database to UI
-- [ ] Clerk Auth
+- [X] Clerk Auth
 - [ ] Image Upload
 - [ ] Error Managment
 - [ ] Routing/image page 

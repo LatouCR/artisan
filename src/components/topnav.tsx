@@ -1,34 +1,45 @@
-"use client"
-
 import { UserButton } from '@clerk/nextjs';
-
-const DotIcon = () => {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-            fill="currentColor"
-        >
-            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
-        </svg>
-    )
-}
+import { auth } from '@clerk/nextjs/server';
+import Link from "next/link";
 
 export default function TopNav() {
+const { userId } = auth();
+
     return (
-        <div className="flex justify-between items-center p-4 bg-white text-black">
-            <div>
-                <a href="/" className="text-white">
-                    Artisan
-                </a>
+        <nav className='flex items-center justify-between px-6 py-4 bg-white'>
+        <div className='flex items-center'>
+          <Link href='/'>
+            <div className='text-lg font-bold text-white uppercase'>
+              Artisan
             </div>
-            <div>
-                <UserButton
-                    userProfileMode='navigation'
-                    userProfileUrl='/profile'
-                >
-                </UserButton>
-            </div>
+          </Link>
         </div>
+        <div className='flex items-center text-white'>
+          {!userId && (
+            <>
+              <Link
+                href='/signin'
+                className='text-gray-300 hover:text-white mr-4'
+              >
+                Sign In
+              </Link>
+              <Link
+                href='/signup'
+                className='text-gray-300 hover:text-white mr-4'
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
+          {userId && (
+            <Link href='profile' className='text-gray-300 hover:text-white mr-4'>
+              Profile
+            </Link>
+          )}
+          <div className='ml-auto'>
+            <UserButton afterSignOutUrl='/' />
+          </div>
+        </div>
+      </nav>
     );
 }
