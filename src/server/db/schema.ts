@@ -23,8 +23,8 @@ export const posts = createTable(
   {
     id: serial("id").primaryKey(),
     text: varchar("text", { length: 256 }),
-    userId: varchar("user_id", { length: 256 }).notNull(),
-    userName: varchar("user_name", { length: 256 }).notNull(),
+    userId: varchar("user_id", { length: 256 }),
+    userName: varchar("user_name", { length: 256 }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),

@@ -1,9 +1,5 @@
 "use client"
-
 import { useUser } from "@clerk/nextjs"
-
-import { db } from "src/server/db"
-
 import {
     Dialog,
     DialogContent,
@@ -18,36 +14,61 @@ import { Input } from "@/components/ui/input"
 
 import { useForm, SubmitHandler } from "react-hook-form"
 
-import { posts } from "src/server/db/schema"
 
 type FormValues = {
-    text: string
-}
+    text: string;
+};
+
+interface CreatePostResponse {
+    message: string;
+    post: {
+      id: number; // Assuming your post has an ID field
+      text: string;
+      userId: string;
+      userName: string;
+      // Add any other fields that your post might have
+    };
+  }
 
 const CreatePost = () => {
+   
+    const { isLoaded, user } = useUser();
     const { register, handleSubmit, reset } = useForm<FormValues>();
 
-    const { isLoaded, user } = useUser();
     if (!isLoaded || !user) {
         return null;
     }
-
+   
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
-        await db.insert(posts).values({
-            text: data.text,
-            userId: user.id,
-            userName: user.fullName ?? "Anonimo",
-        })
-        reset();
-    }
-
-    if (!user) return null;
+        try {
+          const response = await fetch('/api/posts', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              text: data.text,
+              userId: user.id,
+              userName: user.fullName ?? "Anonimo",
+            }),
+          });
+      
+          if (!response.ok) {
+            throw new Error('Failed to create post');
+          }
+      
+          const result = await response.json() as CreatePostResponse;
+          console.log('Post created:', result.post);
+          reset(); // Reset the form after successful submission
+        } catch (error) {
+          console.error('Error creating post:', error);
+        }
+      };
 
     return (
         <Dialog>
             <DialogTrigger>
-                <div
-                    className="bg-purple-800 text-white p-2 rounded-md">
+                <div className="bg-purple-800 text-white p-2 rounded-md">
                     Crear Post
                 </div>
             </DialogTrigger>
@@ -58,13 +79,13 @@ const CreatePost = () => {
                         Crea una publicacion dentro de la base de datos. Esta publicacion es solo para pruebas.
                     </DialogDescription>
                 </DialogHeader>
-
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="mb-2">
-                        <Input
-                            type="text"
-                            placeholder="Mensaje..."
+                    <div>
+                        <Input 
+                            type="text" 
+                            placeholder="Mensaje..." 
                             {...register("text", { required: true })}
+                            className="mb-2"
                         />
                     </div>
                     <DialogFooter>
@@ -73,12 +94,11 @@ const CreatePost = () => {
                                 Cancelar
                             </div>
                         </DialogClose>
-                        <button
-                            type="submit"
-                            className="bg-green-800 text-white p-2 rounded-md w-24"
-                        >
-                            Crear
-                        </button>
+                        <DialogClose 
+                            type="submit" 
+                            className="bg-green-800 text-white p-2 rounded-md w-24">
+                                Crear
+                        </DialogClose>
                     </DialogFooter>
                 </form>
             </DialogContent>

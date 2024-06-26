@@ -5,7 +5,7 @@
 - [X] Deploy en Vercel
 - [X] Shadcn install
 - [X] Postgres Vercel database
-- [ ] database to UI <- RN 
+- [X] database to UI 
 - [X] Clerk Auth
 - [ ] Image Upload
 - [ ] Error Managment

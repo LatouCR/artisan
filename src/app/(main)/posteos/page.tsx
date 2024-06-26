@@ -1,26 +1,36 @@
 import { db } from "src/server/db";
-import DeletePost from "./delete";
+import { eq } from "drizzle-orm";
 import CreatePost from "./create";
-
+import { auth } from "@clerk/nextjs/server";
+import { posts } from "src/server/db/schema";
 export const dynamic = "force-dynamic"; // force dynamic reload
 
 export default async function Feed() {
+    const { userId } = auth();
+    console.log(posts);
+    console.log(userId);
 
-    const posts = await db.query.posts.findMany();
-    console.log(posts)
+    let posteos;
+    if (userId) {
+        posteos = await db.query.posts.findMany({
+            where: eq(posts.userId, userId)
+        });
+    } else {
+        posteos = await db.query.posts.findMany();
+    }
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center bg-slate-200 text-black">
-            <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+            <div className="">
                 <h1>Prueba de conexion con base de datos</h1>
+                <h1 className="text-red-600 text-base font-semibold">Para Crear un post, iniciar sesion!</h1>
                 <div className="flex gap-2">
                     <CreatePost/>
-                    <DeletePost/>
                 </div>
-                <div className="flex flex-col gap-2">
-                    {posts.map((post) => (
+                <div className="flex flex-col gap-2 w-full">
+                    {posteos.map((post) => (
                         <div
-                            className="bg-white p-4 rounded-md shadow-md w-96 "
+                            className="bg-white p-4 rounded-md shadow-md "
                             key={post.id}
                         >
                             <div className="w-full flex items-center gap-2">
