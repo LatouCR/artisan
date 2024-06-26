@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useForm } from "react-hook-form"
+import type { SubmitHandler } from "react-hook-form"
 
 
 type FormValues = {
