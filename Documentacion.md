@@ -27,6 +27,7 @@ Next.js en su version 14.0, agrego los llamados `App Router` que permiten crear 
 
 Dentro de Next se usan los <Link> Link para redireccionar a otra pagina creado en el approuter. 
 
+```
 src > app > 
     Opciones.
         1. Carpeta dentro de app. Esta va a a ser una ruta dentro de localhost:3000/[NombreDeLaCarpeta]
@@ -37,6 +38,7 @@ src > app >
                 (user) -> posts/[postId] 
                 Crea una ruta dentro de localhost:3000 con la direccion de localhost:3000/posts/[postId].
                 Este tambien devuelve un prop que pueden leer todas las carpetas hijo. Punto 3.
+```
 
 [Docs - App Router](https://nextjs.org/docs/app/building-your-application/routing)
 
@@ -167,9 +169,9 @@ const Form<User> {
 
 ### Auth
 
-La utenticacion del cliente fue implementada por medio de [Clerk](https://clerk.com/) Auth 
+La utenticacion del cliente fue implementada por medio de [Clerk](https://clerk.com) Auth 
 
-[Documentacion - Clerk Auth](https://clerk.com/docs
+[Documentacion - Clerk Auth](https://clerk.com/docs)
 
 ### Base de Datos
 
