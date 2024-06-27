@@ -9,6 +9,18 @@ interface CreatePostRequest {
   userName: string;
 }
 
+export async function GET() {
+  try {
+    // Fetch all posts using Drizzle ORM
+    const result = await db.query.posts.findMany();
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+
+}
+
 // Define the type for a post based on your schema
 export async function POST(request: Request) {
   try {
