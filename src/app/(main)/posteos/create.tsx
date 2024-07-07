@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 
 import { useForm } from "react-hook-form"
+import { UploadButton } from "src/utils/uploadthing"
 import type { SubmitHandler } from "react-hook-form"
 
 
@@ -88,6 +89,7 @@ const CreatePost = () => {
                             {...register("text", { required: true })}
                             className="mb-2"
                         />
+                        <UploadButton endpoint="imageUploader"/>
                     </div>
                     <DialogFooter>
                         <DialogClose>
