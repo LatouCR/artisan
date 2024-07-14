@@ -3,7 +3,8 @@ import { eq } from "drizzle-orm";
 import CreatePost from "./create";
 import { auth } from "@clerk/nextjs/server";
 import { posts, comments } from "src/server/db/schema";
-
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import ImageModal from "@/components/ImageModal";
 import { Plus, Heart, MessageCircleMore, Bookmark, Reply, TriangleAlert } from "lucide-react";
 
 export const dynamic = "force-dynamic"; // force dynamic reload
@@ -63,13 +64,11 @@ export default async function Feed() {
                                     {post.text}
                                 </p>
                             </div>
-                            <div>
-                                <img
-                                    src="https://images.unsplash.com/photo-1720772821301-20a71d4ca69d?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                    alt="post"
-                                    className="w-full h-96 object-cover"
-                                />
-                            </div>
+                            {post.imageUrl && (
+                                <AspectRatio ratio={3 / 2} className="bg-muted">
+                                    <ImageModal imageUrl={post.imageUrl} altText={"Post Image"} />
+                                </AspectRatio>
+                            )}
                         </div>
 
                         <div className="flex items-center px-4">

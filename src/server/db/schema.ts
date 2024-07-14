@@ -21,6 +21,7 @@ export const posts = createTable(
   {
     id: serial("id").primaryKey(),
     text: varchar("text", { length: 256 }),
+    imageUrl: varchar("imageUrl", { length: 1024 }),
     userId: varchar("user_id", { length: 256 }),
     userName: varchar("user_name", { length: 256 }),
     createdAt: timestamp("created_at", { withTimezone: true })

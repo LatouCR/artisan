@@ -11,11 +11,10 @@ import {
     DialogClose,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { UploadButton } from "src/utils/uploadthing"
 import type { SubmitHandler } from "react-hook-form"
-
 
 type FormValues = {
     text: string;
@@ -35,6 +34,7 @@ interface CreatePostResponse {
 const CreatePost = () => {
 
     const { isLoaded, user } = useUser();
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
     const { register, handleSubmit, reset } = useForm<FormValues>();
 
     if (!isLoaded || !user) {
@@ -52,6 +52,7 @@ const CreatePost = () => {
                     text: data.text,
                     userId: user.id,
                     userName: user.fullName ?? "Anonimo",
+                    imageUrl: imageUrl,
                 }),
             });
 
@@ -92,7 +93,15 @@ const CreatePost = () => {
                             {...register("text", { required: true })}
                             className="mb-2"
                         />
-                        <UploadButton endpoint="imageUploader" />
+                        <UploadButton
+                            endpoint="imageUploader"
+                            onClientUploadComplete={(res) => {
+                                setImageUrl(res?.[0]?.url ?? null);
+                            }}
+                            onUploadError={(error: Error) => {
+                                console.error('Error uploading image:', error);
+                            }}
+                        />
                     </div>
                     <DialogFooter>
                         <DialogClose>

@@ -7,6 +7,7 @@ interface CreatePostRequest {
   text: string;
   userId: string;
   userName: string;
+  imageUrl: string;
 }
 
 export async function GET() {
@@ -25,7 +26,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json() as CreatePostRequest;
-    const { text, userId, userName } = body;
+    const { text, userId, userName, imageUrl } = body;
 
     // Validate input
     if (!text || !userId || !userName) {
@@ -37,6 +38,7 @@ export async function POST(request: Request) {
       text,
       userId,
       userName,
+      imageUrl,
     })
     return NextResponse.json({ message: 'Post created successfully', result}, { status: 201 });
   } catch (error) {

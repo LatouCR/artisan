@@ -19,7 +19,7 @@ export default function ImageModal({ imageUrl, altText }: ImageModalProps) {
         src={imageUrl}
         alt={altText}
         fill
-        className="rounded-md object-cover cursor-pointer"
+        className="object-cover cursor-pointer"
         onClick={openModal}
       />
       {isOpen && (
