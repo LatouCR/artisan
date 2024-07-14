@@ -24,55 +24,58 @@ type FormValues = {
 interface CreatePostResponse {
     message: string;
     post: {
-      id: number; // Assuming your post has an ID field
-      text: string;
-      userId: string;
-      userName: string;
-      // Add any other fields that your post might have
+        id: number; // Assuming your post has an ID field
+        text: string;
+        userId: string;
+        userName: string;
+        // Add any other fields that your post might have
     };
-  }
+}
 
 const CreatePost = () => {
-   
+
     const { isLoaded, user } = useUser();
     const { register, handleSubmit, reset } = useForm<FormValues>();
 
     if (!isLoaded || !user) {
         return null;
     }
-   
+
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
         try {
-          const response = await fetch('/api/posts', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              text: data.text,
-              userId: user.id,
-              userName: user.fullName ?? "Anonimo",
-            }),
-          });
-      
-          if (!response.ok) {
-            throw new Error('Failed to create post');
-          }
-      
-          const result = await response.json() as CreatePostResponse;
-          console.log('Post created:', result.post);
-          reset(); // Reset the form after successful submission
+            const response = await fetch('/api/posts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    text: data.text,
+                    userId: user.id,
+                    userName: user.fullName ?? "Anonimo",
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create post');
+            }
+
+            const result = await response.json() as CreatePostResponse;
+            console.log('Post created:', result.post);
+            reset(); // Reset the form after successful submission
         } catch (error) {
-          console.error('Error creating post:', error);
+            console.error('Error creating post:', error);
         }
-      };
+    };
 
     return (
         <Dialog>
             <DialogTrigger>
-                <div className="bg-purple-800 text-white p-2 rounded-md">
-                    Crear Post
+                <div className="flex mx-2 justify-center items-center">
+                    <div className="bg-purple-800 text-white p-2 rounded-md flex">
+                        Crear Post
+                    </div>
                 </div>
+
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -83,13 +86,13 @@ const CreatePost = () => {
                 </DialogHeader>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
-                        <Input 
-                            type="text" 
-                            placeholder="Mensaje..." 
+                        <Input
+                            type="text"
+                            placeholder="Mensaje..."
                             {...register("text", { required: true })}
                             className="mb-2"
                         />
-                        <UploadButton endpoint="imageUploader"/>
+                        <UploadButton endpoint="imageUploader" />
                     </div>
                     <DialogFooter>
                         <DialogClose>
@@ -97,10 +100,10 @@ const CreatePost = () => {
                                 Cancelar
                             </div>
                         </DialogClose>
-                        <DialogClose 
-                            type="submit" 
+                        <DialogClose
+                            type="submit"
                             className="bg-green-800 text-white p-2 rounded-md w-24">
-                                Crear
+                            Crear
                         </DialogClose>
                     </DialogFooter>
                 </form>

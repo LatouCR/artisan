@@ -22,8 +22,6 @@ export default async function Comments() {
               </div>
             ))}
           </div>
-
-
         </div>
       </main>
     );
