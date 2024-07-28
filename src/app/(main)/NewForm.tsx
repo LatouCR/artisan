@@ -34,7 +34,7 @@ export const NewForm = () =>  {
                             <FormItem>
                                 <FormLabel htmlFor={field.value}>New Post</FormLabel>
                                     <FormControl>
-                                        <Tiptap description={field.value} onChange={field.onChange}></Tiptap>
+                                        <Tiptap content={field.value} onChange={field.onChange}></Tiptap>
                                     </FormControl>
                                     <FormMessage>{form.formState.errors.text?.message}</FormMessage>
                                 </FormItem>
