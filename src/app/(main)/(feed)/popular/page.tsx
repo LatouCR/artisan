@@ -1,8 +1,7 @@
 import { db } from "src/server/db";
-import { eq } from "drizzle-orm";
-import CreatePost from "./create";
+import CreatePostModal from "@/components/modals/CreatePostModal";
 import { auth } from "@clerk/nextjs/server";
-import { posts, comments } from "src/server/db/schema";
+import { posts } from "src/server/db/schema";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import ImageModal from "@/components/ImageModal";
 import { Plus, Heart, MessageCircleMore, Bookmark, Reply, TriangleAlert } from "lucide-react";
@@ -16,14 +15,13 @@ export default async function Feed() {
 
     let posteos;
     if (userId) {
-        posteos = await db.query.posts.findMany({
-            where: eq(posts.userId, userId),
-            with: { comments: true },
-        });
+      posteos = await db.query.posts.findMany({
+        with: { comments: true },
+      });
     } else {
-        posteos = await db.query.posts.findMany({
-            with: { comments: true },
-        });
+      posteos = await db.query.posts.findMany({
+        with: { comments: true },
+      });
     }
 
     return (
@@ -31,7 +29,7 @@ export default async function Feed() {
             <div className="flex items-center justify-center w-full flex-col">
 
                 <div className="my-2">
-                    <CreatePost />
+                    <CreatePostModal />
                 </div>
 
                 {posteos.map((post) => (

@@ -6,7 +6,8 @@ import {
   ClerkProvider,
 } from '@clerk/nextjs'
 
-import TopNav from "@/components/topnav";
+import TopNav from "@/components/nav/Topnav";
+import SideNav from "@/components/nav/SideNav";
 
 export const metadata = {
   title: "Artisan",
@@ -23,8 +24,21 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
         <body>
-          <TopNav/>
-          {children}
+          <header className="w-full sticky top-0">
+            <TopNav />
+          </header>
+          <div className="flex w-screen h-screen bg-white">
+            <div className="flex-col flex sm:max-w-20 lg:max-w-full">
+              <div className="flex flex-col flex-1 overflow-y-hidden h-screen">
+                <SideNav />
+              </div>
+            </div>
+            <div className="flex flex-col flex-1 overflow-y-auto bg-slate-100">
+              <div className="flex flex-col flex-1">
+                {children}
+              </div>
+            </div>
+          </div>
         </body>
       </html>
     </ClerkProvider>

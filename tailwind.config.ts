@@ -25,6 +25,10 @@ const config = withUt({
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        ataccent: "#4B335C",
+        atprimary: "#023E8A",
+        attext: "#212121",
+        athover: "#DEE6F0",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

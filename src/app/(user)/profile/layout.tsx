@@ -6,7 +6,7 @@ import {
   ClerkProvider,
 } from '@clerk/nextjs'
 
-import TopNav from "@/components/topnav";
+import TopNav from "@/components/nav/Topnav";
 
 export const metadata = {
   title: "Artisan",
