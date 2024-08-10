@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 import { useUser } from "@clerk/nextjs"
 import {
@@ -15,6 +16,8 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { UploadButton } from "src/utils/uploadthing"
 import type { SubmitHandler } from "react-hook-form"
+import { Newspaper } from "lucide-react"
+import { Image as Img } from "lucide-react"
 
 type FormValues = {
     text: string;
@@ -51,7 +54,7 @@ const CreatePostModal = () => {
                 body: JSON.stringify({
                     text: data.text,
                     userId: user.id,
-                    userName: user.fullName ?? "Anonimo",
+                    userName: user.username ?? user.fullName,
                     imageUrl: imageUrl,
                 }),
             });
@@ -71,11 +74,27 @@ const CreatePostModal = () => {
     return (
         <Dialog>
             <DialogTrigger>
-                <div className="flex mx-2 justify-center items-center">
-                    <div className="bg-purple-800 text-white p-2 rounded-md flex">
-                        Crear Post
+                <div className="w-[660px] h-auto">
+                    <div className="w-full flex items-center gap-1.5">
+                        <img src={user.imageUrl} alt="" className="w-14 h-14 rounded-full" />
+                        <div className="flex px-5 py-3 w-full rounded-3xl max-h-14 h-full bg-white border-action/80 border-2 ">
+                            <p className="text-neutral-400 font-light">En que estas pensando, {user.username ?? user.fullName}?</p>
+                        </div>
                     </div>
+                    <div className="flex justify-between mt-4 mb-2 px-4">
+                        <span className="flex items-center gap-1 max-w-36 h-7 rounded-lg hover:bg-slate-300">
+                            <Img size={28} color="#37334A"/>
+                            <p>Post Picture</p>
+                        </span>
+                        <span className="flex items-center gap-1 max-w-36 h-7 rounded-lg hover:bg-slate-300">
+                            <Newspaper size={28} color="#780000"/>
+                            <p>Write Article</p>
+                        </span>
+
+                    </div>
+
                 </div>
+
 
             </DialogTrigger>
             <DialogContent>

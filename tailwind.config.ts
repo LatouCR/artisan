@@ -29,6 +29,11 @@ const config = withUt({
         atprimary: "#023E8A",
         attext: "#212121",
         athover: "#DEE6F0",
+        action: {
+          DEFAULT: "hsl(214, 97%, 27%)",
+          likes: "hsl(356, 83%, 41%)",
+          highlight: 'hsl(214, 100%, 50%)',
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
