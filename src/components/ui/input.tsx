@@ -4,8 +4,8 @@ import { cn } from "src/lib/utils"
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-    foo?: boolean;
-  }
+  foo?: boolean;
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {

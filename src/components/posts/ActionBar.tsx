@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Heart, MessageCircleMore, Bookmark } from "lucide-react";
 
 interface ActionBarProps {
-    postDate: Date
+    postDate: string
 }
 
 const ActionBar = ({ postDate }: ActionBarProps) => {
@@ -37,10 +37,9 @@ const ActionBar = ({ postDate }: ActionBarProps) => {
             <div className="w-full border-t border-x-neutral-400">
                 <div className="my-2 flex items-center justify-between">
                     <div className="text-slate-400 text-xs">
-                        <p>{new Date(postDate).toLocaleString()}</p>
+                        <p>{postDate}</p>
                     </div>
                     <div className="flex items-center gap-3">
-                        
                         <span
                             onClick={handleComment}
                             className="flex gap-1.5 text-black/40 hover:text-action-highlight rounded-full hover:bg-action/20  hover:cursor-pointer"
@@ -48,7 +47,6 @@ const ActionBar = ({ postDate }: ActionBarProps) => {
                             {comments > 0 && <p className="text-black/20">{comments}</p>}
                             <MessageCircleMore />
                         </span>
-
                         <span
                             onClick={handleLike}
                             className={`flex gap-1.5 rounded-full hover:bg-action-likes/10 hover:text-action-likes cursor-pointer ${isLiked ? 'text-action-likes' : 'text-black/40'
@@ -57,7 +55,6 @@ const ActionBar = ({ postDate }: ActionBarProps) => {
                             {likes > 0 && <p className="text-black/20 hover:text-action-likes">{likes}</p>}
                             <Heart fill={isLiked ? 'currentColor' : 'none'} />
                         </span>
-
                         <span
                             onClick={handleBookmark}
                             className={`flex gap-1.5 hover:text-action-highlight rounded-full hover:bg-action/20 cursor-pointer ${isBookmarked ? 'text-action' : 'text-black/40'

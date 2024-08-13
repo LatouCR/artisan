@@ -91,6 +91,14 @@ const config = withUt({
         "post": "660px"
       }
     },
+    screens: {
+      'sn': '1200px',
+      'xs': '475px',
+      'sm': '640px',
+      'md': '768px',
+      'xl': '1280px',
+      'lg': '1024px',
+    }
   },
   plugins: [require("tailwindcss-animate")],
 }) satisfies Config

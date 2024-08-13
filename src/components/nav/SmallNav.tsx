@@ -1,78 +1,98 @@
+"use client"
 import Link from "next/link";
 import Image from "next/image";
-import { Flame, CirclePlus, PencilRuler, HelpCircle } from 'lucide-react';
+import { usePathname } from "next/navigation";
+import { Flame, CirclePlus, Settings, HelpCircle, LogOut, Bookmark, UsersRound, Newspaper } from 'lucide-react';
+import { SignOutButton } from "@clerk/nextjs";
+import { Button } from "../ui/button";
 
-const SideNav = () => {
+const SmallNav = () => {
+
+    const pathname = usePathname();
+    const isActive = (href: string) => {
+        return pathname == href;
+    }
 
     return (
-        <aside id="left-sidebar" className="flex-1 flex flex-col fixed left-0 h-[calc(100%-73px)] sm:w-20 xs:w-20  lg:w-60 z-20 bg-white content-between border-r border-neutral-400/70">
-            <nav className="flex flex-col flex-1">
-                <ul className="py-4 text-attext w-full">
-                    <li className="w-full p-2 hover:bg-atprimary flex items-center ">
-                        <Link href="/home" className="gap-2 inline-flex items-center">
-                            <Image
-                                src="/home.svg"
-                                alt="home"
-                                height={32}
-                                width={30}
-                            />
-                            <h1 className="font-semibold text-lg sm:invisible lg:visible">
-                                Home
-                            </h1>
-                        </Link>
-                    </li>
-                    <li className="w-full p-2 hover:bg-atprimary flex items-center">
-                        <Link href="/popular" className="gap-2 inline-flex items-center">
-                            <Flame size={32} />
-                            <h1 className="font-semibold text-lg sm:invisible lg:visible">
-                                Trending
-                            </h1>
-                        </Link>
-                    </li>
-                    <li className="w-full p-2 hover:bg-atprimary flex items-center">
-                        <Link href="/calendario" className="gap-2 inline-flex items-center">
-                            <Image
-                                src="/chat.svg"
-                                alt="chat"
-                                height={32}
-                                width={32}
-                            />
-                            <h1 className="font-semibold text-lg sm:invisible lg:visible">
-                                Chat
-                            </h1>
-                        </Link>
-                    </li>
-                    <li className="w-full p-2 hover:bg-atprimary flex items-center">
-                        <Link href="/mensajes" className="gap-2 inline-flex items-center">
-                            <CirclePlus size={32} />
-                            <h1 className="font-semibold text-lg sm:invisible lg:visible">
-                                New
-                            </h1>
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
+        <aside id="left-sidebar" className="flex-1 flex flex-col fixed left-0 h-[calc(100%-73px)] w-16 z-20 bg-white content-between border-r border-neutral-400/70 items-center">
+                <nav className="flex flex-col border-b border-neutral-400/70">
+                    <ul className="py-2 text-attext w-full flex flex-col gap-1">
+                        <li className={isActive(`/home`) ? 'w-full p-2 flex items-center bg-athover rounded-xl text-atprimary' : 'w-full p-2 flex items-center hover:bg-athover rounded-xl'}>
+                            <Link href={`/home`} className="gap-2 inline-flex items-center" >
+                                {isActive(`/home`) ?
+                                    <Image src="/homefilled.svg" alt="home" height={32} width={30} /> :
+                                    <Image src="/home.svg" alt="home" height={32} width={30} />}
+                            </Link>
+                        </li>
+                        <li className={isActive(`/popular`) ? 'w-full p-2 flex items-center bg-athover rounded-xl text-atprimary' : 'w-full p-2 flex items-center hover:bg-athover rounded-xl'}>
+                            <Link href={`/popular`} className="gap-2 inline-flex items-center">
+                                {isActive(`/popular`) ? <Flame size={32} fill="#023E8A" /> : <Flame size={32} />}
+                            </Link>
+                        </li>
 
-            <li className="w-full p-2 hover:bg-atprimary flex items-center">
-                <Link href="/herramientas" className="gap-2 inline-flex items-center">
-                    <PencilRuler size={28} />
-                    <h1 className="font-semibold text-lg sm:invisible lg:visible">
-                        Tools
-                    </h1>
-                </Link>
-            </li>
-            <li className="w-full p-2 hover:bg-atprimary flex items-center">
-                <Link href="/help" className="gap-2 flex items-center">
-                    <HelpCircle size={28} />
-                    <h1 className="font-semibold text-lg sm:invisible lg:visible">
-                        Help
-                    </h1>
-                </Link>
-            </li>
+                        <li className="w-full p-2 flex items-center hover:bg-atprimary/10 rounded-xl">
+                            <Link href={`profile/saved`} className="gap-2 inline-flex items-center">
+                                {isActive(`profile/saved`) ? <Bookmark size={32} fill="#023E8A" /> : <Bookmark size={32} />}
+                            </Link>
+                        </li>
+                        <li className={isActive(`/messages`) ? 'w-full p-2 flex items-center bg-athover rounded-xl text-atprimary' : 'w-full p-2 flex items-center hover:bg-athover rounded-xl'}>
+                            <Link href={`/messages`} className="gap-2 inline-flex items-center">
+                                {isActive(`/messages`) ?
+                                    <Image src="/chatfilled.svg" alt="home" height={32} width={32} /> :
+                                    <Image src="/chat.svg" alt="home" height={32} width={32} />}
+                            </Link>
+                        </li>
+                    </ul>
+                </nav>
+
+                <nav className="flex flex-col border-b mt-3 border-neutral-400/70">
+                    <ul className="py-2 text-attext w-full flex flex-col gap-1">
+                        <li className={isActive(`/profile`) ? 'w-full p-2 flex items-center bg-athover rounded-xl text-atprimary' : 'w-full p-2 flex items-center hover:bg-athover rounded-xl'}>
+                            <Link href={`/profile`} className="gap-2 inline-flex items-center" >
+                                {isActive(`/profile`) ? <UsersRound size={32} fill="#023E8A" /> : <UsersRound size={32} />}
+                            </Link>
+                        </li>
+                        <li className={isActive(`/articles`) ? 'w-full p-2 flex items-center bg-athover rounded-xl text-atprimary' : 'w-full p-2 flex items-center hover:bg-athover rounded-xl'}>
+                            <Link href={`/articles`} className="gap-2 inline-flex items-center">
+                            {isActive(`articles`) ? <Newspaper size={32} fill="#023E8A" /> : <Newspaper size={32} />}
+                            </Link>
+                        </li>
+                        <li className="w-full p-2 flex items-center hover:bg-atprimary/10 rounded-xl">
+                            <Button className="gap-2 inline-flex items-center justify-start w-full h-8 p-0 hover:no-underline" variant="link"> {/* onClick = openPostModal */}
+                                <CirclePlus size={32} />
+                            </Button>
+                        </li>
+                    </ul>
+                </nav>
+
+                <nav className="flex flex-col border-b mt border-neutral-400/70">
+                    <ul className="py-2 text-attext w-full flex flex-col gap-1">
+                        <li className={isActive(`/settings`) ? 'w-full p-2 flex items-center bg-athover rounded-xl text-atprimary' : 'w-full p-2 flex items-center hover:bg-athover rounded-xl'}>
+                            <Link href={`/settings`} className="gap-2 inline-flex items-center">
+                                {isActive(`/settings`) ? <Settings size={32} color="#023E8A" /> : <Settings size={32} />}
+                            </Link>
+                        </li>
+                        <li className={isActive(`/help`) ? 'w-full p-2 flex items-center bg-athover rounded-xl text-atprimary' : 'w-full p-2 flex items-center hover:bg-athover rounded-xl'}>
+                            <Link href={`/help`} className="gap-2 inline-flex items-center">
+                                {isActive(`/help`) ? <HelpCircle size={32} color="#023E8A" /> : <HelpCircle size={32} />}
+                            </Link>
+                        </li>
+                        <li className="w-full p-2 flex items-center hover:bg-athover rounded-xl">
+                            <SignOutButton
+                                redirectUrl="/"
+                            >
+                                <div className="gap-2 inline-flex items-center hover:cursor-pointer">
+                                    <LogOut />
+                                </div>
+                            </SignOutButton>
+
+                        </li>
+                    </ul>
+                </nav>
 
         </aside>
     );
 };
 
-export default SideNav;
+export default SmallNav;
 

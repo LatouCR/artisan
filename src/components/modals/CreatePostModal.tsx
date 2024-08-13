@@ -4,20 +4,19 @@ import { useUser } from "@clerk/nextjs"
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogFooter,
     DialogTrigger,
     DialogClose,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
+import { Textarea } from "../ui/textarea"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { UploadButton } from "src/utils/uploadthing"
+import PostModalActions from "../PostModalActions"
+
 import type { SubmitHandler } from "react-hook-form"
-import { Newspaper } from "lucide-react"
-import { Image as Img } from "lucide-react"
 
 type FormValues = {
     text: string;
@@ -26,11 +25,10 @@ type FormValues = {
 interface CreatePostResponse {
     message: string;
     post: {
-        id: number; // Assuming your post has an ID field
+        id: number;
         text: string;
         userId: string;
         userName: string;
-        // Add any other fields that your post might have
     };
 }
 
@@ -65,7 +63,7 @@ const CreatePostModal = () => {
 
             const result = await response.json() as CreatePostResponse;
             console.log('Post created:', result.post);
-            reset(); // Reset the form after successful submission
+            reset();
         } catch (error) {
             console.error('Error creating post:', error);
         }
@@ -73,65 +71,65 @@ const CreatePostModal = () => {
 
     return (
         <Dialog>
-            <DialogTrigger>
-                <div className="w-[660px] h-auto">
+            <DialogTrigger className="w-full max-w-post">
+                <div className="max-w-post w-full max h-auto bg-white p-3 rounded-2xl border-neutral-400/40 border">
                     <div className="w-full flex items-center gap-1.5">
-                        <img src={user.imageUrl} alt="" className="w-14 h-14 rounded-full" />
-                        <div className="flex px-5 py-3 w-full rounded-3xl max-h-14 h-full bg-white border-action/80 border-2 ">
-                            <p className="text-neutral-400 font-light">En que estas pensando, {user.username ?? user.fullName}?</p>
+                        <img src={user.imageUrl} alt="" className="w-12 h-12 rounded-full" />
+                        <div className="flex px-5 py-3 w-full rounded-3xl max-h-14 h-full bg-white border-action/80 border-2 hover:bg-neutral-100 ">
+                            <p className="text-neutral-400 font-light xm:">En que estas pensando, {user.username ?? user.fullName}?</p>
                         </div>
                     </div>
-                    <div className="flex justify-between mt-4 mb-2 px-4">
-                        <span className="flex items-center gap-1 max-w-36 h-7 rounded-lg hover:bg-slate-300">
-                            <Img size={28} color="#37334A"/>
-                            <p>Post Picture</p>
-                        </span>
-                        <span className="flex items-center gap-1 max-w-36 h-7 rounded-lg hover:bg-slate-300">
-                            <Newspaper size={28} color="#780000"/>
-                            <p>Write Article</p>
-                        </span>
-
-                    </div>
-
+                    <PostModalActions />
                 </div>
-
-
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-2xl w-full p-6">
                 <DialogHeader>
-                    <DialogTitle>Crear un Post</DialogTitle>
-                    <DialogDescription>
-                        Crea una publicacion dentro de la base de datos. Esta publicacion es solo para pruebas.
-                    </DialogDescription>
+                    <DialogTitle>
+                        <div className="flex w-full items-center gap-2">
+                            <img src={user.imageUrl} alt="" className="w-12 h-12 rounded-full" />
+                            <div>
+                                <h1 className="text-xl">{user.username ?? user.fullName}</h1>
+                                <p className="text-sm font-thin text-neutral-400">Crea una publicacion</p>
+                            </div>
+                        </div>
+                    </DialogTitle>
+
                 </DialogHeader>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
-                        <Input
-                            type="text"
-                            placeholder="Mensaje..."
+                        <Textarea
+                            placeholder="Sobre que quieres hablar?"
                             {...register("text", { required: true })}
-                            className="mb-2"
+                            className="mb-2 h-96 border-none items-start text-xl p-0 resize-none focus-visible:outline-none focus-visible:ring-transparent focus-visible:ring-0 focus-visible:ring-offset-transparent"
+                            autoComplete="off"
                         />
-                        <UploadButton
-                            endpoint="imageUploader"
-                            onClientUploadComplete={(res) => {
-                                setImageUrl(res?.[0]?.url ?? null);
-                            }}
-                            onUploadError={(error: Error) => {
-                                console.error('Error uploading image:', error);
-                            }}
-                        />
+                        <div className="flex gap-2 mb-2 hover:cursor-pointer">
+                            <img src="/imgicon.svg" alt="" />
+                            <UploadButton
+                                appearance={{
+                                    button: 'bg-transparent text-neutral-400 w-24',
+                                    container: 'flex w-auto items-start',
+                                    allowedContent: 'hidden'
+                                }}
+                                endpoint="imageUploader"
+                                onClientUploadComplete={(res) => {
+                                    console.log('Image uploaded:', res);
+                                    setImageUrl(res?.[0]?.url ?? null);
+                                }}
+                                onUploadError={(error: Error) => {
+                                    console.error('Error uploading image:', error);
+                                }}
+                            >
+                            </UploadButton>
+
+                        </div>
+
                     </div>
-                    <DialogFooter>
-                        <DialogClose>
-                            <div className="bg-red-800 text-white p-2 rounded-md w-24">
-                                Cancelar
-                            </div>
-                        </DialogClose>
+                    <DialogFooter className="border-t border-t-neutral-200 w-full pt-3">
                         <DialogClose
                             type="submit"
-                            className="bg-green-800 text-white p-2 rounded-md w-24">
-                            Crear
+                            className="bg-action-highlight text-white p-2 rounded-3xl w-24">
+                            Publicar
                         </DialogClose>
                     </DialogFooter>
                 </form>

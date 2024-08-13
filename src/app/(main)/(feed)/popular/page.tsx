@@ -1,13 +1,17 @@
 import { db } from "src/server/db";
-import CreatePostModal from "@/components/modals/CreatePostModal";
 import { auth } from "@clerk/nextjs/server";
 import { posts } from "src/server/db/schema";
+
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import ImageModal from "@/components/modals/ImageModal";
-import { Ellipsis, Heart, Reply, TriangleAlert } from "lucide-react";
+import CreatePostModal from "@/components/modals/CreatePostModal";
 import UserDisplay from "@/components/UserDisplay";
 import ActionBar from "@/components/posts/ActionBar";
-import UserImg from "@/components/UserImg";
+import CommentsSection from "@/components/posts/CommentsSection";
+
+import { Ellipsis } from "lucide-react";
+
+import { format } from "date-fns";
 
 export const dynamic = "force-dynamic"; // force dynamic reload
 
@@ -59,53 +63,10 @@ export default async function Feed() {
               )}
             </div>
 
-            <ActionBar postDate={post.createdAt} />
+            <ActionBar postDate={format(new Date(post.createdAt), 'PPpp')} />
 
-            <div className="px-4 pb-2 flex justify-between text-black/40 hover:text-action/20">
-              <div className="flex gap-4 hover:cursor-pointer">
-                <p className="font-medium text-sm">view replies</p>
-              </div>
-            </div>
+            <CommentsSection comments={post.comments} />
 
-
-
-            {post.comments.map((comment) => (
-              <div className="flex flex-col w-full my-2" key={comment.id}>
-
-                <div className="flex w-full px-2 gap-2">
-                  <UserImg userId={comment.userId} className="w-12 h-12"/>
-                  <div id="post-comment">
-                    <div className="w-full leading-5">
-                      <h2 className="font-semibold">{comment.userName}</h2>
-                      <p className="text-xs text-slate-400">Job Position</p>
-                    </div>
-                    <div className=" max-w-xl">
-                      <p className="text-sm">{comment.text}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="px-4 flex justify-between text-black/40">
-                  <div className="flex gap-4 hover:cursor-pointer">
-                    <div>---</div>
-                    <p className="font-semibold">view replies</p>
-                  </div>
-                  <div className="flex gap-6">
-                    <span className="flex gap-2 hover:text-teal-700 cursor-pointer items-center my-auto">
-                      <p className="text-black/20">Reply</p>
-                      <Reply strokeWidth={3} className="text-slate-400 hover:text-teal-700" />
-                    </span>
-                    <span className="flex gap-2 text-black/40 hover:text-teal-700 cursor-pointer">
-                      <p className="text-black/20">20</p>
-                      <Heart />
-                    </span>
-                    <TriangleAlert />
-                  </div>
-                </div>
-
-              </div>
-
-            ))}
           </div>
         ))}
       </div>

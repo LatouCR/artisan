@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { clerkClient } from "@clerk/nextjs/server";
 
 export default async function HomePage({ params }: { params: { id: string } }) {

@@ -1,14 +1,18 @@
 import { db } from "src/server/db";
 import { eq } from "drizzle-orm";
-import CreatePostModal from "@/components/modals/CreatePostModal";
 import { auth } from "@clerk/nextjs/server";
 import { posts } from "src/server/db/schema";
+
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import ImageModal from "@/components/modals/ImageModal";
-import { Ellipsis, Heart, Reply, TriangleAlert } from "lucide-react";
+import CreatePostModal from "@/components/modals/CreatePostModal";
 import ActionBar from "@/components/posts/ActionBar";
 import UserDisplay from "@/components/UserDisplay";
 import UserImg from "@/components/UserImg";
+
+import { Ellipsis, Heart, Reply, TriangleAlert } from "lucide-react";
+
+import { format } from "date-fns";
 
 export const dynamic = "force-dynamic"; // force dynamic reload
 
@@ -29,12 +33,14 @@ export default async function Feed() {
     });
   }
 
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-slate-200 text-black">
       <div className="flex items-center justify-center w-full flex-col">
 
-        <div className="my-2">
+        <div className="my-2 w-full flex justify-center">
           <CreatePostModal />
+
         </div>
 
         {posteos.map((post) => (
@@ -61,20 +67,21 @@ export default async function Feed() {
               )}
             </div>
 
-            <ActionBar postDate={post.createdAt} />
+            <ActionBar postDate={format(new Date(post.createdAt), 'PPpp')} />
 
-
-            <div className="px-4 pb-2 flex justify-between text-black/40">
-              <div className="flex gap-4 hover:cursor-pointer">
-                <p className="font-semibold">view replies</p>
+            {post.comments.length > 0 && (
+              <div className="px-4 pb-2 flex justify-between text-black/40">
+                <div className="flex gap-4 hover:cursor-pointer">
+                  <p className="font-semibold">view replies</p>
+                </div>
               </div>
-            </div>
+            )}
 
             {post.comments.map((comment) => (
               <div className="flex flex-col w-full my-2" key={comment.id}>
 
                 <div className="flex w-full px-2 gap-2">
-                  <UserImg userId={comment.userId} className="w-12 h-12"/>
+                  <UserImg userId={comment.userId} className="w-12 h-12" />
                   <div id="post-comment">
                     <div className="w-full leading-5">
                       <h2 className="font-semibold">{comment.userName}</h2>
