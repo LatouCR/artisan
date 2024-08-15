@@ -8,6 +8,7 @@ import {
   pgTableCreator,
   serial,
   text,
+  pgTable,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -44,14 +45,29 @@ export const comments = createTable("comments", {
   updatedAt: timestamp("updatedAt", { withTimezone: true }),
 });
 
+export const likes = pgTable("likes", {
+  id: serial("id").primaryKey(),
+  postId: integer("post_id").notNull().references(() => posts.id),
+  userId: varchar("user_id", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+});
+
 // Define relations
 export const postsRelations = relations(posts, ({ many }) => ({
   comments: many(comments),
+  likes: many(likes),
 }));
 
 export const commentsRelations = relations(comments, ({ one }) => ({
   post: one(posts, {
     fields: [comments.postId],
+    references: [posts.id],
+  }),
+}));
+
+export const likesRelations = relations(likes, ({ one }) => ({
+  post: one(posts, {
+    fields: [likes.postId],
     references: [posts.id],
   }),
 }));

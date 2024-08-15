@@ -1,6 +1,6 @@
 import { db } from "src/server/db";
 import { eq } from "drizzle-orm";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { posts } from "src/server/db/schema";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -18,8 +18,12 @@ export const dynamic = "force-dynamic"; // force dynamic reload
 
 export default async function Feed() {
   const { userId } = auth();
-  console.log(posts);
-  console.log(userId);
+  
+  let userName = "Anonymous"; // Valor predeterminado
+  if (userId) {
+    const user = await clerkClient.users.getUser(userId);
+    userName = user.username || "Anonymous";
+  }
 
   let posteos;
   if (userId) {
@@ -67,9 +71,15 @@ export default async function Feed() {
               )}
             </div>
 
-            <ActionBar postDate={format(new Date(post.createdAt), 'PPpp')} />
+            <ActionBar 
+                postId={post.id} 
+                postDate={post.createdAt} 
+                userId={userId as string} 
+                userName={userName}
+                commentsCount={post.comments.length} 
+            />
 
-            {post.comments.length > 0 && (
+            {post.comments.length >= 0 && (
               <div className="px-4 pb-2 flex justify-between text-black/40">
                 <div className="flex gap-4 hover:cursor-pointer">
                   <p className="font-semibold">view replies</p>
