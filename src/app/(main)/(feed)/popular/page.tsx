@@ -1,5 +1,5 @@
 import { db } from "src/server/db";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { posts } from "src/server/db/schema";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -7,34 +7,31 @@ import ImageModal from "@/components/modals/ImageModal";
 import CreatePostModal from "@/components/modals/CreatePostModal";
 import UserDisplay from "@/components/UserDisplay";
 import ActionBar from "@/components/posts/ActionBar";
-import CommentsSection from "@/components/posts/CommentsSection";
 
 import { Ellipsis } from "lucide-react";
 
 import { format } from "date-fns";
+import { Suspense } from "react";
+import CommentsSection from "@/components/posts/CommentsSection";
 
-export const dynamic = "force-dynamic"; // force dynamic reload
+export const dynamic = "force-dynamic";
 
 export default async function Feed() {
   const { userId } = auth();
-  console.log(posts);
-  console.log(userId);
 
-  let posteos;
+  let userName = "Anonymous";
   if (userId) {
-    posteos = await db.query.posts.findMany({
-      with: { comments: true },
-    });
-  } else {
-    posteos = await db.query.posts.findMany({
-      with: { comments: true },
-    });
+    const user = await clerkClient.users.getUser(userId);
+    userName = user.username ?? "Anonymous";
   }
+
+  const posteos = await db.query.posts.findMany({
+    with: { comments: true },
+  });
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-slate-200 text-black">
       <div className="flex items-center justify-center w-full flex-col">
-
         <div className="my-2">
           <CreatePostModal />
         </div>
@@ -63,9 +60,17 @@ export default async function Feed() {
               )}
             </div>
 
-            <ActionBar postDate={format(new Date(post.createdAt), 'PPpp')} />
+            <ActionBar
+              postId={post.id}
+              postDate={post.createdAt}
+              userId={userId}
+              userName={userName}
+              commentsCount={post.comments.length}
+            />
 
-            <CommentsSection comments={post.comments} />
+            <Suspense fallback={<div>Loading comments...</div>}>
+              <CommentsSection comments={post.comments} />
+            </Suspense>
 
           </div>
         ))}
