@@ -18,11 +18,13 @@ export const dynamic = "force-dynamic"; // force dynamic reload
 
 export default async function Feed() {
   const { userId } = auth();
+
+  if (!userId) return null;
   
   let userName = "Anonymous"; // Valor predeterminado
   if (userId) {
     const user = await clerkClient.users.getUser(userId);
-    userName = user.username || "Anonymous";
+    userName = user.username ?? "Anonymous";
   }
 
   let posteos;
@@ -74,7 +76,7 @@ export default async function Feed() {
             <ActionBar 
                 postId={post.id} 
                 postDate={post.createdAt} 
-                userId={userId as string} 
+                userId={userId} 
                 userName={userName}
                 commentsCount={post.comments.length} 
             />

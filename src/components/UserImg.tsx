@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
+
 import { use } from 'react';
 import { clerkClient } from "@clerk/nextjs/server";
 import { cn } from "src/lib/utils";
 
 interface UserImgProps {
-  userId: string;
+  userId: string | null;
   className?: string;
 }
 
@@ -13,6 +15,9 @@ async function getUserImage(userId: string) {
 }
 
 export default function UserImg({ userId, className }: UserImgProps) {
+
+  if (!userId) return null
+
   const imageUrl = use(getUserImage(userId));
 
   return (

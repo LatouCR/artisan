@@ -7,7 +7,6 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 
@@ -22,6 +21,15 @@ interface CommentModalProps {
 type FormValues = {
   text: string;
 };
+
+interface CommentResponse {
+  id: number;
+  text: string;
+  postId: number;
+  userId: string;
+  userName: string;
+  // Add any other fields that your API returns
+}
 
 const CommentModal = ({ postId, userId, userName, isOpen, onClose }: CommentModalProps) => {
   const { register, handleSubmit, reset } = useForm<FormValues>();
@@ -42,12 +50,10 @@ const CommentModal = ({ postId, userId, userName, isOpen, onClose }: CommentModa
           userName,
         }),
       });
-
       if (!response.ok) {
         throw new Error("Failed to create comment");
       }
-
-      const result = await response.json();
+      const result: unknown = await response.json();
       console.log("Comment created:", result);
       reset();
       onClose();
@@ -58,8 +64,12 @@ const CommentModal = ({ postId, userId, userName, isOpen, onClose }: CommentModa
     }
   };
 
+  const handleOpenChange = (open: boolean) => {
+    if (!open) onClose();
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="p-4">
         <DialogHeader className="mb-4">
           <DialogTitle className="text-lg font-semibold">Añadir un comentario</DialogTitle>
@@ -73,7 +83,7 @@ const CommentModal = ({ postId, userId, userName, isOpen, onClose }: CommentModa
           <DialogFooter className="flex justify-end space-x-2">
             <DialogClose asChild>
               <button
-                onClick={onClose}
+                type="button"
                 className="bg-gray-300 text-gray-800 p-2 rounded-md w-24"
               >
                 Cancelar

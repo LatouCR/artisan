@@ -22,7 +22,7 @@ export default async function Feed() {
   let userName = "Anonymous";
   if (userId) {
     const user = await clerkClient.users.getUser(userId);
-    userName = user.username || "Anonymous";
+    userName = user.username ?? "Anonymous";
   }
 
   const posteos = await db.query.posts.findMany({
@@ -63,7 +63,7 @@ export default async function Feed() {
             <ActionBar
               postId={post.id}
               postDate={post.createdAt}
-              userId={userId as string}
+              userId={userId}
               userName={userName}
               commentsCount={post.comments.length}
             />
