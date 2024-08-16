@@ -1,6 +1,8 @@
 import { db } from "src/server/db";
 import { auth } from "@clerk/nextjs/server";
 import { posts } from "src/server/db/schema";
+import { redirect } from "next/navigation";
+import { clerkClient } from "@clerk/nextjs/server";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import ImageModal from "@/components/modals/ImageModal";
@@ -17,6 +19,9 @@ export const dynamic = "force-dynamic"; // force dynamic reload
 
 export default async function Feed() {
   const { userId } = auth();
+  if (!userId) return redirect("/signin");
+  const user = await clerkClient.users.getUser(userId);
+  
   console.log(posts);
   console.log(userId);
 
@@ -63,8 +68,13 @@ export default async function Feed() {
               )}
             </div>
 
-            <ActionBar postDate={format(new Date(post.createdAt), 'PPpp')} />
-
+            <ActionBar
+             postDate={format(new Date(post.createdAt), 'PPpp')} 
+             postId={post.id}
+             userId={userId} 
+             userName={user.username ?? "Unknown"}
+             commentsCount={post.comments.length} 
+             />
             <CommentsSection comments={post.comments} />
 
           </div>

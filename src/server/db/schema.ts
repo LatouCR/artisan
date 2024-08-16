@@ -36,7 +36,9 @@ export const posts = createTable(
 
 export const comments = createTable("comments", {
   id: serial("id").primaryKey(),
-  postId: integer("post_id").notNull().references(() => posts.id),
+  postId: integer("post_id")
+    .notNull()
+    .references(() => posts.id),
   text: text("text").notNull(),
   userId: varchar("user_id", { length: 256 }).notNull(),
   userName: varchar("user_name", { length: 256 }).notNull(),
@@ -44,17 +46,17 @@ export const comments = createTable("comments", {
   updatedAt: timestamp("updatedAt", { withTimezone: true }),
 });
 
-// Define relations
-export const postsRelations = relations(posts, ({ many }) => ({
-  comments: many(comments),
-}));
-
-export const commentsRelations = relations(comments, ({ one }) => ({
-  post: one(posts, {
-    fields: [comments.postId],
-    references: [posts.id],
-  }),
-}));
+export const likes = createTable(
+  "likes", 
+  {
+  id: serial("id").primaryKey(),
+  postId: integer("post_id").references(() => posts.id), // Nullable now
+  commentId: integer("comment_id").references(() => comments.id), // New field
+  userId: varchar("user_id", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+});
 
 export const images = createTable(
   "image",
@@ -68,8 +70,32 @@ export const images = createTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt", { withTimezone: true }),
-    },
+  },
   (image) => ({
     nameIndex: index("image_name_idx").on(image.name),
   }),
 );
+
+// Define relations
+export const postsRelations = relations(posts, ({ many }) => ({
+  comments: many(comments),
+  likes: many(likes),
+}));
+
+export const commentsRelations = relations(comments, ({ one }) => ({
+  post: one(posts, {
+    fields: [comments.postId],
+    references: [posts.id],
+  }),
+}));
+
+export const likesRelations = relations(likes, ({ one }) => ({
+  post: one(posts, {
+    fields: [likes.postId],
+    references: [posts.id],
+  }),
+  comment: one(comments, {
+    fields: [likes.commentId],
+    references: [comments.id],
+  }),
+}));
