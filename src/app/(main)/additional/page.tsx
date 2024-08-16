@@ -10,6 +10,8 @@ interface FormData {
     firstName?: string;
     lastName?: string;
     jobPosition?: string;
+    githubUrl?: string;
+    Ubication?: string;
     Biography?: string;
     HeaderURL?: string;
 }
@@ -28,7 +30,9 @@ const AdditionalUpdate: React.FC = () => {
             await user?.update({
                 unsafeMetadata: {
                     jobPosition: data.jobPosition,
+                    githubUrl: data.githubUrl,
                     Biography: data.Biography,
+                    Ubication: data.Ubication,
                     HeaderURL: data.HeaderURL,
                 },
             });
@@ -54,7 +58,7 @@ const AdditionalUpdate: React.FC = () => {
                             </label>
                             <input
                                 defaultValue={user?.firstName ?? ''}
-    
+
                                 className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                             />
                             {errors.firstName && <span className="text-sm text-red-600">This field is required</span>}
@@ -71,7 +75,7 @@ const AdditionalUpdate: React.FC = () => {
                         </div>
                         <div>
                             <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="customName">
-                                Custom Name
+                                Job Position
                             </label>
                             <input
                                 defaultValue={(user?.unsafeMetadata as { jobPosition?: string })?.jobPosition ?? ''}
@@ -84,14 +88,45 @@ const AdditionalUpdate: React.FC = () => {
                                 <span className="text-sm text-red-600">This field is required</span>
                             )}
                         </div>
+                        <div>
+                            <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="customName">
+                                Ubication
+                            </label>
+                            <input
+                                defaultValue={(user?.unsafeMetadata as { Ubication?: string })?.Ubication ?? ''}
+                                {...register('Ubication', {
+                                    required: false,
+                                })}
+                                className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                            />
+                            {errors.Ubication && (
+                                <span className="text-sm text-red-600">This field is required</span>
+                            )}
+                        </div>
+                        <div>
+                            <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="customName">
+                                Github URL
+                            </label>
+                            <input
+                                defaultValue={(user?.unsafeMetadata as { githubUrl?: string })?.githubUrl ?? ''}
+                                {...register('Ubication', {
+                                    required: false,
+                                })}
+                                className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                            />
+                            {errors.githubUrl && (
+                                <span className="text-sm text-red-600">This field is required</span>
+                            )}
+                        </div>
                         <div className="mt-4">
                             <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="customBio">
-                                Custom Bio
+                                Biography
                             </label>
                             <textarea
                                 rows={6}
                                 defaultValue={(user?.unsafeMetadata as { Biography?: string })?.Biography ?? ''}
                                 {...register('Biography', {
+                                    required: false,
                                 })}
                                 className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                             ></textarea>
@@ -99,17 +134,16 @@ const AdditionalUpdate: React.FC = () => {
                         </div>
                         <div className="mt-4">
                             <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="customBio">
-                                Custom Bio
+                                HeaderURL
                             </label>
                             <textarea
                                 rows={6}
                                 defaultValue={(user?.unsafeMetadata as { HeaderURL?: string })?.HeaderURL ?? ''}
                                 {...register('HeaderURL', {
-                                    required: true,
+                                    required: false,
                                 })}
                                 className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                             ></textarea>
-                            {errors.Biography && <span className="text-sm text-red-600">This field is required</span>}
                         </div>
                         <button
                             type="submit"

@@ -15,9 +15,10 @@ import { format } from "date-fns";
 
 interface PostComponentProps {
     userId: string;
+    userName: string | null;
 }
 
-export default async function PostComponent({ userId }: PostComponentProps) {
+export default async function UserPosts({ userId, userName }: PostComponentProps) {
     const posteos = await db.query.posts.findMany({
         where: eq(posts.userId, userId),
         with: { comments: true },
@@ -31,7 +32,7 @@ export default async function PostComponent({ userId }: PostComponentProps) {
         <>
             {posteos.map((posts) => (
                 <div key={posts.id}
-                    className="max-w-post w-full h-auto overflow-hidden bg-white rounded-sm my-2 border-neutral-400/70 border">
+                    className="max-w-post w-full h-auto overflow-hidden bg-white rounded-sm my-1 border-neutral-400/70 border">
                     <UserDisplay userId={posts.userId} userName={posts.userName}>
                         <div className="flex items-center justify-center text-neutral-300 hover:text-action cursor-pointer">
                             <Ellipsis size={16} />
@@ -49,7 +50,14 @@ export default async function PostComponent({ userId }: PostComponentProps) {
                         )}
                     </div>
 
-                    <ActionBar postDate={format(new Date(posts.createdAt), 'PPpp')} />
+                    <ActionBar 
+                    postDate={format(new Date(posts.createdAt), 'PPpp')}
+                    postId={posts.id}
+                    userId={userId}
+                    userName={userName ?? "Unknown"}
+                    commentsCount={posts.comments.length} 
+
+                     />
                 </div>
 
             ))}

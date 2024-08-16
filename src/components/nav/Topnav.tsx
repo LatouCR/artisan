@@ -49,7 +49,7 @@ export default function TopNav() {
             <Link href='/profile/settings' className='text-black mr-4'>
               <Bell size={36} fill='black' />
             </Link>
-            <UserButton afterSignOutUrl='/' userProfileMode="navigation" userProfileUrl="/profile" appearance={{
+            <UserButton afterSignOutUrl='/' appearance={{
               elements: {
                 userButtonAvatarBox: "w-9 h-9"
               }
