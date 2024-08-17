@@ -14,7 +14,7 @@ export default function UserDisplay({ userId, userName, jobPosition, children }:
         <div className="flex items-center px-3 py-2">
             <div className="flex items-center w-full justify-between">
                 <Link
-                    href={`/profile/${userId}`}
+                    href={`/user/${userId}`}
                     className="flex items-center gap-2"
                 >
                     <UserImg userId={userId} className="w-12 h-12" />

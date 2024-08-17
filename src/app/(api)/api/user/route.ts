@@ -3,18 +3,20 @@ import { clerkClient } from "@clerk/nextjs/server";
 
 interface UpdateUserMetadataRequest {
   userId: string;
-  biography?: string;
-  headerUrl?: string;
+  JobPosition?: string;
+  Biography?: string;
+  HeaderURL?: string;
 }
 
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as UpdateUserMetadataRequest;
-    const { userId, biography, headerUrl } = body;
+    const { userId, JobPosition, Biography, HeaderURL  } = body;
     await clerkClient.users.updateUserMetadata(userId, {
-      publicMetadata: {
-        biography,
-        headerUrl,
+      unsafeMetadata: {
+        JobPosition,
+        Biography,
+        HeaderURL,
       },
     });
     return NextResponse.json(
@@ -43,7 +45,7 @@ export async function GET(request: Request) {
 
   try {
     const user = await clerkClient.users.getUser(userId);
-    return NextResponse.json(user.publicMetadata);
+    return NextResponse.json(user);
   } catch (error) {
     console.error("Error fetching user metadata:", error);
     return NextResponse.json(
