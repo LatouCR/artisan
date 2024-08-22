@@ -11,7 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 
 interface CommentModalProps {
-  postId: number;
+  postId?: number | null;
   userId: string;
   userName: string;
   isOpen: boolean;

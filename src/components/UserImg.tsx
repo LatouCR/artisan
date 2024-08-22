@@ -3,7 +3,7 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { cn } from "src/lib/utils";
 
 interface UserInfoProps {
-    userId: string | null,
+    userId?: string | null,
     className?: string,
 }
 

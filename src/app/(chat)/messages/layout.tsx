@@ -5,6 +5,7 @@ import { GeistSans } from "geist/font/sans";
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
+import { Toaster } from "@/components/ui/sonner";
 
 import TopNav from "@/components/nav/Topnav";
 import SmallNav from "@/components/nav/SmallNav";
@@ -39,6 +40,7 @@ export default function RootLayout({
               </div>
             </div>
           </div>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

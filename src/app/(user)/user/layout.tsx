@@ -8,6 +8,7 @@ import {
 
 import TopNav from "@/components/nav/Topnav";
 import SmallNav from "@/components/nav/SmallNav";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
   title: "Artisan",
@@ -39,6 +40,7 @@ export default function RootLayout({
               </div>
             </div>
           </div>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

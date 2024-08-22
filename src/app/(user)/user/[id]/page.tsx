@@ -6,6 +6,7 @@ import { MapPin, UserRoundPlus, Pencil, Globe } from "lucide-react";
 import Link from "next/link";
 import UserPosts from "@/components/posts/UserPosts";
 import ProfileActions from "@/components/ProfileActions";
+import EditProfile from "@/components/modals/EditProfile";
 
 
 export default async function UserPage({ params }: { params: { id: string } }) {
@@ -53,12 +54,7 @@ export default async function UserPage({ params }: { params: { id: string } }) {
                             />
                             <div className="w-full flex justify-end mt-4">
                                 {user.id == currentId ? (
-                                    <Link
-                                        href={`/user/${id}/edit`}
-                                        className="w-8 h-8 flex items-center justify-center rounded-full border border-black/40 text-black hover:text-atprimary hover:border-atprimary"
-                                    >
-                                        <Pencil size={18} />
-                                    </Link>
+                                    <EditProfile />
                                 ) : (
                                     <Link
                                         href="/"
@@ -88,7 +84,7 @@ export default async function UserPage({ params }: { params: { id: string } }) {
                         <div className="mx-4 flex items-center gap-4 pb-3">
                                 <div className="flex items-center gap-2">
                                     <MapPin size={16} color="#023E8A" />
-                                    <p className="text-sm font-medium text-atprimary">{(user?.unsafeMetadata as { Ubication?: string })?.Ubication}</p>
+                                    <p className="text-sm font-medium text-neutral-400">{(user?.unsafeMetadata as { Ubication?: string })?.Ubication}</p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Globe size={16} color="#023E8A" />

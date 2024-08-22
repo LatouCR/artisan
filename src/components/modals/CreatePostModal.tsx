@@ -10,6 +10,7 @@ import {
     DialogTrigger,
     DialogClose,
 } from "@/components/ui/dialog"
+import { toast } from "sonner"
 import { Textarea } from "../ui/textarea"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -17,6 +18,7 @@ import { UploadButton } from "src/utils/uploadthing"
 import PostModalActions from "../PostModalActions"
 
 import type { SubmitHandler } from "react-hook-form"
+
 
 type FormValues = {
     text: string;
@@ -58,14 +60,19 @@ const CreatePostModal = () => {
             });
 
             if (!response.ok) {
+                toast("Error", { 
+                    description: "Failed to create post",
+                })
                 throw new Error('Failed to create post');
             }
-
-            const result = await response.json() as CreatePostResponse;
-            console.log('Post created:', result.post);
+            toast("Success", {
+                description: 'Your post has been created',
+            });
             reset();
         } catch (error) {
-            console.error('Error creating post:', error);
+            toast("Error", {
+                description: `Something went wrong`,
+            })
         }
     };
 
@@ -113,7 +120,9 @@ const CreatePostModal = () => {
                                 }}
                                 endpoint="imageUploader"
                                 onClientUploadComplete={(res) => {
-                                    console.log('Image uploaded:', res);
+                                    toast("Success", {
+                                        description: "Image uploaded",
+                                    });
                                     setImageUrl(res?.[0]?.url ?? null);
                                 }}
                                 onUploadError={(error: Error) => {

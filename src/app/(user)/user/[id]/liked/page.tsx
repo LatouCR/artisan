@@ -4,9 +4,21 @@ import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { MapPin, UserRoundPlus, Pencil, Globe } from "lucide-react";
 import Link from "next/link";
-import UserPosts from "@/components/posts/UserPosts";
 import ProfileActions from "@/components/ProfileActions";
 
+import { db } from "src/server/db";
+import { eq, not, and } from "drizzle-orm";
+import { posts } from "src/server/db/schema";
+import { likes } from "src/server/db/schema";
+
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import ImageModal from "@/components/modals/ImageModal";
+import ActionBar from "@/components/posts/ActionBar";
+import UserDisplay from "@/components/UserDisplay";
+
+import { Ellipsis } from "lucide-react";
+
+import { format } from "date-fns";
 
 export default async function UserPage({ params }: { params: { id: string } }) {
     const { id } = params;
@@ -20,6 +32,20 @@ export default async function UserPage({ params }: { params: { id: string } }) {
     // Get the user from the Clerk API using the user ID
     const user = await clerkClient.users.getUser(id);
     console.log("This is the profile user id: " + user.id);
+
+    if (!user) return null;
+    if (!currentId) return null;
+
+    const likedPosts = await db.query.likes.findMany({
+        with: { post: true },
+        where: and(
+            eq(likes.userId, id),
+        )
+    });
+
+    console.log("User has liked posts:");
+    console.table(likedPosts);
+
 
     // Revalidate the path so that the page is updated with the latest data
     revalidatePath(`/user/${id}`);
@@ -85,16 +111,16 @@ export default async function UserPage({ params }: { params: { id: string } }) {
                         )}
                     </div>
 
-                        <div className="mx-4 flex items-center gap-4 pb-3">
-                                <div className="flex items-center gap-2">
-                                    <MapPin size={16} color="#023E8A" />
-                                    <p className="text-sm font-medium text-atprimary">{(user?.unsafeMetadata as { Ubication?: string })?.Ubication}</p>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Globe size={16} color="#023E8A" />
-                                    <p className="text-sm font-medium text-atprimary">{(user?.unsafeMetadata as { githubUrl?: string })?.githubUrl}</p>
-                                </div>
+                    <div className="mx-4 flex items-center gap-4 pb-3">
+                        <div className="flex items-center gap-2">
+                            <MapPin size={16} color="#023E8A" />
+                            <p className="text-sm font-medium text-atprimary">{(user?.unsafeMetadata as { Ubication?: string })?.Ubication}</p>
                         </div>
+                        <div className="flex items-center gap-2">
+                            <Globe size={16} color="#023E8A" />
+                            <p className="text-sm font-medium text-atprimary">{(user?.unsafeMetadata as { githubUrl?: string })?.githubUrl}</p>
+                        </div>
+                    </div>
 
                     <div className="mx-4 flex gap-3 pb-3"> {/* Componetizar -- Followers & Friends*/}
                         <Link href={`/user/${id}/friends`}>
@@ -108,7 +134,34 @@ export default async function UserPage({ params }: { params: { id: string } }) {
                     <ProfileActions id={id} />
 
                 </div>
-                <UserPosts userId={id} userName={user?.username} />
+                {likedPosts.map((likedpost) => (
+                    <div key={likedpost.id}
+                        className="max-w-post w-full h-auto overflow-hidden bg-white rounded-sm my-1 border-neutral-400/70 border">
+                        <UserDisplay userId={likedpost.post?.userId} userName={likedpost.post?.userName}>
+                            <div className="flex items-center justify-center text-neutral-300 hover:text-action cursor-pointer">
+                                <Ellipsis size={16} />
+                            </div>
+                        </UserDisplay>
+
+                        <div className="w-full mb-2">
+                            <div className="flex items-center px-3 text-justify mb-2">
+                                <p className="text-base">{likedpost.post?.text}</p>
+                            </div>
+                            {posts.imageUrl && (
+                                <AspectRatio ratio={3 / 2} className="bg-muted">
+                                    <ImageModal imageUrl={likedpost.post?.imageUrl} altText={"Post Image"} />
+                                </AspectRatio>
+                            )}
+                        </div>
+
+                        <ActionBar
+                            postId={likedpost.post?.id}
+                            userId={user.id}
+                            userName={likedpost.post?.userName ?? "Unknown"}
+                        />
+                    </div>
+
+                ))}
             </div>
         </main>
     );

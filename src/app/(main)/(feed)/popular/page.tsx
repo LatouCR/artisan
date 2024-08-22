@@ -21,7 +21,7 @@ export default async function Feed() {
   const { userId } = auth();
   if (!userId) return redirect("/signin");
   const user = await clerkClient.users.getUser(userId);
-  
+
   console.log(posts);
   console.log(userId);
 
@@ -40,7 +40,7 @@ export default async function Feed() {
     <main className="flex min-h-screen flex-col items-center justify-center bg-slate-200 text-black">
       <div className="flex items-center justify-center w-full flex-col">
 
-        <div className="my-2">
+        <div className="my-2 w-full flex justify-center">
           <CreatePostModal />
         </div>
 
@@ -69,12 +69,12 @@ export default async function Feed() {
             </div>
 
             <ActionBar
-             postDate={format(new Date(post.createdAt), 'PPpp')} 
-             postId={post.id}
-             userId={userId} 
-             userName={user.username ?? "Unknown"}
-             commentsCount={post.comments.length} 
-             />
+              postDate={format(new Date(post.createdAt), 'PPpp')}
+              postId={post.id}
+              userId={userId}
+              userName={user.username ?? "Unknown"}
+              commentsCount={post.comments.length}
+            />
             <CommentsSection comments={post.comments} />
 
           </div>

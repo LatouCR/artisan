@@ -3,13 +3,15 @@ import { useState, useEffect } from 'react'
 import { Heart, MessageCircleMore, Bookmark } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import CommentModal from '../modals/CommentModal';
+import { toast } from "sonner"
+
 
 interface ActionBarProps {
-    postDate: string;
-    postId: number;
+    postDate?: string | null;
+    postId?: number | null;
     userId: string | null;
     userName: string;
-    commentsCount: number;
+    commentsCount?: number;
 }
 
 type Like = {
@@ -53,6 +55,7 @@ const ActionBar = ({ postId, postDate, userId, userName, commentsCount }: Action
                     body: JSON.stringify({ postId, userId }),
                 });
                 setLikes((prev) => prev - 1);
+                toast("Post Unliked");
             } else {
                 await fetch("/api/likes", {
                     method: "POST",
@@ -62,6 +65,7 @@ const ActionBar = ({ postId, postDate, userId, userName, commentsCount }: Action
                     body: JSON.stringify({ postId, userId }),
                 });
                 setLikes((prev) => prev + 1);
+                toast("Post Liked");
             }
             setIsLiked((prev) => !prev);
         } catch (error) {

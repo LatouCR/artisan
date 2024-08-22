@@ -3,15 +3,20 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 interface ImageModalProps {
-    imageUrl: string;
+    imageUrl?: string | null;
     altText: string;
 }
 
 export default function ImageModal({ imageUrl, altText }: ImageModalProps) {
+
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+
+  if (!imageUrl) {
+    return null;
+  };
 
   return (
     <>

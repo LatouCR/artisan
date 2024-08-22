@@ -45,7 +45,6 @@ export default async function Feed() {
 
         <div className="my-2 w-full flex justify-center">
           <CreatePostModal />
-
         </div>
 
         {posteos.map((post) => (
@@ -53,7 +52,11 @@ export default async function Feed() {
             key={post.id}
             className="max-w-post w-full h-auto overflow-hidden bg-white rounded-sm my-2 border-neutral-400/70 border">
 
-            <UserDisplay userId={post.userId} userName={post.userName}>
+            <UserDisplay 
+            userId={post.userId} 
+            userName={post.userName}
+            jobPosition={(user?.unsafeMetadata as { jobPosition?: string })?.jobPosition}            
+            >
               <div className="flex items-center justify-center text-neutral-300 hover:text-action cursor-pointer">
                 <Ellipsis size={16} />
               </div>
