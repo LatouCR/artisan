@@ -37,9 +37,36 @@ export default function HelpPage() {
         </div>
         <div className="mt-5">
           <h2 id="guides" className="h3">Guías de Usuario</h2>
-          <p>
-            Consulta nuestras guías para aprender cómo utilizar todas las funcionalidades de la plataforma.
-          </p>
+          <div className="container my-5">
+  <h2>Guía de Usuario para la Red Social Artisan</h2>
+  
+  <h3>1. Crear una cuenta</h3>
+  <ol>
+    <li>Accede a la página principal de la red social y selecciona Registrarse.</li>
+    <li>Rellena el formulario de registro con tu nombre, correo electrónico y una contraseña segura.</li>
+    <li>
+      Si lo prefieres, puedes registrarte utilizando tus cuentas de Google o Facebook haciendo clic en los botones correspondientes.
+    </li>
+    <li>Acepta los términos y condiciones, y haz clic en Registrarse.</li>
+    <li>
+      Recibirás un correo de confirmación. Haz clic en el enlace para verificar tu cuenta.
+    </li>
+  </ol>
+  
+  <h3>2. Iniciar sesión</h3>
+  <ol>
+    <li>Una vez creada tu cuenta, accede a la página de inicio de sesión.</li>
+    <li>Introduce tu correo electrónico y contraseña, o inicia sesión con Google o Facebook si elegiste esa opción durante el registro.</li>
+    <li>Haz clic en Iniciar sesión para acceder a tu perfil.</li>
+  </ol>
+
+  <h3>3. Publicar y compartir contenido</h3>
+  <ol>
+    <li>En tu página de inicio o perfil, verás un cuadro de texto donde puedes crear una nueva publicación.</li>
+    <li>Escribe un mensaje, comparte enlaces, imágenes o videos.</li>
+  </ol>
+</div>
+
         </div>
       </div>
     </main>
