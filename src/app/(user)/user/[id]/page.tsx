@@ -2,11 +2,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { MapPin, UserRoundPlus, Pencil, Globe } from "lucide-react";
+import { MapPin, Globe } from "lucide-react";
 import Link from "next/link";
 import UserPosts from "@/components/posts/UserPosts";
 import ProfileActions from "@/components/ProfileActions";
 import EditProfile from "@/components/modals/EditProfile";
+import { FriendRequest } from "@/components/friends/FriendRequest";
 
 
 export default async function UserPage({ params }: { params: { id: string } }) {
@@ -15,6 +16,7 @@ export default async function UserPage({ params }: { params: { id: string } }) {
     // Get the current user from the session and check their id
     const CurrentUser = await currentUser();
     const currentId = CurrentUser?.id;
+    const CurrentName = CurrentUser?.fullName;
     console.log("This is the current user id: " + currentId);
 
 
@@ -56,14 +58,8 @@ export default async function UserPage({ params }: { params: { id: string } }) {
                                 {user.id == currentId ? (
                                     <EditProfile />
                                 ) : (
-                                    <Link
-                                        href="/"
-                                        className="w-8 h-8 flex items-center justify-center rounded-full border border-black/40 text-black hover:text-atprimary hover:border-atprimary"
-                                    >
-                                        <UserRoundPlus size={18} />
-                                    </Link>
+                                    <FriendRequest friendId={user.id} currentUser={currentId} userName={CurrentName ?? "John Smith"} />
                                 )}
-
                             </div>
                         </div>
 

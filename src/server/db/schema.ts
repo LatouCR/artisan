@@ -76,6 +76,39 @@ export const images = createTable(
   }),
 );
 
+export const friendRequests = createTable(
+  "friend_request",
+  {
+    id: serial("id").primaryKey(),
+    userName: varchar("user_name", { length: 256 }).notNull(),
+    senderId: varchar("sender_id", { length: 256 }).notNull(),
+    receiverId: varchar("receiver_id", { length: 256 }).notNull(),
+    status: varchar("status", { length: 20 }).notNull().default('pending'),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }),
+  },
+  (table) => ({
+    senderReceiverIndex: index("sender_receiver_idx").on(table.senderId, table.receiverId),
+  }),
+);
+
+export const friendships = createTable(
+  "friendship",
+  {
+    id: serial("id").primaryKey(),
+    userId1: varchar("user_id_1", { length: 256 }).notNull(),
+    userId2: varchar("user_id_2", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (table) => ({
+    userPairIndex: index("user_pair_idx").on(table.userId1, table.userId2),
+  }),
+);
+
 // Define relations
 export const postsRelations = relations(posts, ({ many }) => ({
   comments: many(comments),
