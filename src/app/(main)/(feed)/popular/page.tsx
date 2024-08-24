@@ -21,6 +21,7 @@ export default async function Feed() {
 
   const CurrentUser = await currentUser();
   const currentId = CurrentUser?.id;
+  const currentName = CurrentUser?.username;
 
   if (!userId) return redirect("/signin");
   const user = await clerkClient.users.getUser(userId);
@@ -51,7 +52,7 @@ export default async function Feed() {
             className="max-w-post w-full h-auto overflow-hidden bg-white rounded-lg my-2 border-neutral-400/70 border">
 
             <UserDisplay userId={post.userId} userName={post.userName}>
-              <MoreActions friendId={post.userId} currentUser={currentId} userName={post.userName} />
+            <MoreActions friendId={post.userId} currentUser={currentId} userName={currentName} />
 
             </UserDisplay>
 

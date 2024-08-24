@@ -24,6 +24,7 @@ export default async function Feed() {
   const { userId } = auth();
   const CurrentUser = await currentUser();
   const currentId = CurrentUser?.id;
+  const currentName = CurrentUser?.username;
 
   if (!userId) return redirect("/signin");
   const user = await clerkClient.users.getUser(userId);
@@ -58,7 +59,7 @@ export default async function Feed() {
               userName={post.userName}
               jobPosition={(user?.unsafeMetadata as { jobPosition?: string })?.jobPosition}
             >
-              <MoreActions friendId={post.userId} currentUser={currentId} userName={post.userName} />
+              <MoreActions friendId={post.userId} currentUser={currentId} userName={currentName} />
             </UserDisplay>
 
             <div className="w-full mb-2">
