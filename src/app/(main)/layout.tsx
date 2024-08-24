@@ -3,8 +3,9 @@ import "src/styles/global.css"
 import { GeistSans } from "geist/font/sans";
 
 import {
-  ClerkProvider,
+  ClerkProvider, 
 } from '@clerk/nextjs'
+import { currentUser } from "@clerk/nextjs/server";
 
 import TopNav from "@/components/nav/Topnav";
 import SideNav from "@/components/nav/SideNav";
@@ -17,11 +18,15 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
+  const CurrentUser = await currentUser();
+  const currentId = CurrentUser?.id;
+
   return (
     <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
@@ -32,7 +37,7 @@ export default function RootLayout({
           <div className="flex w-screen h-screen bg-white">
             <div className="hidden sn:flex flex-col sn:max-w-20">
               <div className="flex flex-col flex-1 overflow-y-hidden h-screen">
-                <SideNav />
+                <SideNav currentUser={currentId}/>
               </div>
             </div>
             <div className="sn:hidden md:flex hidden">

@@ -6,7 +6,7 @@ import { Flame, CirclePlus, Settings, HelpCircle, LogOut, Bookmark, UsersRound, 
 import { SignOutButton } from "@clerk/nextjs";
 import { Button } from "../ui/button";
 
-const SmallNav = () => {
+const SmallNav = ({ currentUser }: { currentUser?: string }) => {
 
     const pathname = usePathname();
     const isActive = (href: string) => {
@@ -47,9 +47,9 @@ const SmallNav = () => {
 
                 <nav className="flex flex-col border-b mt-3 border-neutral-400/70">
                     <ul className="py-2 text-attext w-full flex flex-col gap-1">
-                        <li className={isActive(`/profile`) ? 'w-full p-2 flex items-center bg-athover rounded-xl text-atprimary' : 'w-full p-2 flex items-center hover:bg-athover rounded-xl'}>
-                            <Link href={`/profile`} className="gap-2 inline-flex items-center" >
-                                {isActive(`/profile`) ? <UsersRound size={32} fill="#023E8A" /> : <UsersRound size={32} />}
+                        <li className={isActive(`/user/${currentUser}`) ? 'w-full p-2 flex items-center bg-athover rounded-xl text-atprimary' : 'w-full p-2 flex items-center hover:bg-athover rounded-xl'}>
+                            <Link href={`/user/${currentUser}`} className="gap-2 inline-flex items-center" >
+                                {isActive(`/user/${currentUser}`) ? <UsersRound size={32} fill="#023E8A" /> : <UsersRound size={32} />}
                             </Link>
                         </li>
                         <li className={isActive(`/articles`) ? 'w-full p-2 flex items-center bg-athover rounded-xl text-atprimary' : 'w-full p-2 flex items-center hover:bg-athover rounded-xl'}>
