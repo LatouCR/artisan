@@ -32,7 +32,7 @@ export default async function UserPosts({ userId, userName }: PostComponentProps
         <>
             {posteos.map((posts) => (
                 <div key={posts.id}
-                    className="max-w-post w-full h-auto overflow-hidden bg-white rounded-sm my-1 border-neutral-400/70 border">
+                    className="max-w-post w-full h-auto overflow-hidden bg-white rounded-lg my-1 border-neutral-400/70 border">
                     <UserDisplay userId={posts.userId} userName={posts.userName}>
                         <div className="flex items-center justify-center text-neutral-300 hover:text-action cursor-pointer">
                             <Ellipsis size={16} />

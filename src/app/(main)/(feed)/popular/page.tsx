@@ -48,7 +48,7 @@ export default async function Feed() {
         {posteos.map((post) => (
           <div
             key={post.id}
-            className="max-w-post w-full h-auto overflow-hidden bg-white rounded-sm my-2 border-neutral-400/70 border">
+            className="max-w-post w-full h-auto overflow-hidden bg-white rounded-lg my-2 border-neutral-400/70 border">
 
             <UserDisplay userId={post.userId} userName={post.userName}>
               <MoreActions friendId={post.userId} currentUser={currentId} userName={post.userName} />
