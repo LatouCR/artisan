@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs/server";
 import { posts } from "src/server/db/schema";
 import { redirect } from "next/navigation";
-import { clerkClient } from "@clerk/nextjs/server";
+import { clerkClient, currentUser } from "@clerk/nextjs/server";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import ImageModal from "@/components/modals/ImageModal";
@@ -11,18 +11,23 @@ import CreatePostModal from "@/components/modals/CreatePostModal";
 import ActionBar from "@/components/posts/ActionBar";
 import UserDisplay from "@/components/UserDisplay";
 import UserImg from "@/components/UserImg";
+import MoreActions from "@/components/MoreActions";
 
-import { Ellipsis, Heart, Reply, TriangleAlert } from "lucide-react";
+import { Heart, Reply, TriangleAlert } from "lucide-react";
 
 import { format } from "date-fns";
 
 export const dynamic = "force-dynamic"; // force dynamic reload
 
 export default async function Feed() {
+
   const { userId } = auth();
+  const CurrentUser = await currentUser();
+  const currentId = CurrentUser?.id;
+
   if (!userId) return redirect("/signin");
   const user = await clerkClient.users.getUser(userId);
-  
+
   console.log(posts);
   console.log(userId);
 
@@ -52,14 +57,12 @@ export default async function Feed() {
             key={post.id}
             className="max-w-post w-full h-auto overflow-hidden bg-white rounded-sm my-2 border-neutral-400/70 border">
 
-            <UserDisplay 
-            userId={post.userId} 
-            userName={post.userName}
-            jobPosition={(user?.unsafeMetadata as { jobPosition?: string })?.jobPosition}            
+            <UserDisplay
+              userId={post.userId}
+              userName={post.userName}
+              jobPosition={(user?.unsafeMetadata as { jobPosition?: string })?.jobPosition}
             >
-              <div className="flex items-center justify-center text-neutral-300 hover:text-action cursor-pointer">
-                <Ellipsis size={16} />
-              </div>
+              <MoreActions friendId={post.userId} currentUser={currentId} userName={post.userName} />
             </UserDisplay>
 
             <div className="w-full mb-2">
@@ -76,12 +79,12 @@ export default async function Feed() {
             </div>
 
             <ActionBar
-             postDate={format(new Date(post.createdAt), 'PPpp')} 
-             postId={post.id}
-             userId={userId} 
-             userName={user.username ?? "Unknown"}
-             commentsCount={post.comments.length} 
-             />
+              postDate={format(new Date(post.createdAt), 'PPpp')}
+              postId={post.id}
+              userId={userId}
+              userName={user.username ?? "Unknown"}
+              commentsCount={post.comments.length}
+            />
 
             {post.comments.length > 0 && (
               <div className="px-4 pb-2 flex justify-between text-black/40">
