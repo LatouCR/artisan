@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { FriendRequest } from "@/components/friends/FriendRequest";
-
 
 export default async function HomePage() {
 
@@ -10,7 +8,6 @@ export default async function HomePage() {
         <Link href="/home" className="hover:text-blue-800">
           Home
         </Link>
-        <FriendRequest friendId={""} currentUser={""} />
       </div>
     </main>
   );

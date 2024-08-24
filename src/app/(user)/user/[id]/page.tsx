@@ -58,7 +58,7 @@ export default async function UserPage({ params }: { params: { id: string } }) {
                                 {user.id == currentId ? (
                                     <EditProfile />
                                 ) : (
-                                    <FriendRequest friendId={user.id} currentUser={currentId} userName={CurrentName ?? "John Smith"} variant="default" />
+                                    <FriendRequest friendId={user.id} currentUser={currentId} userName={CurrentName ?? "John Smith"} />
                                 )}
                             </div>
                         </div>
