@@ -109,6 +109,36 @@ export const friendships = createTable(
   }),
 );
 
+export const notifications = createTable(
+  "notification",
+  {
+    id: serial("id").primaryKey().notNull(),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    type: text("type").notNull(),
+    content: text("content").notNull(),
+    status: text("status").default(sql`'unread'`).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+  },
+  (table) => ({
+    userIndex: index("user_idx").on(table.userId),
+  }),
+);
+
+export const followers = createTable(
+  "followers",
+  {
+    id: serial("id").primaryKey(),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    followerId: varchar("follower_id", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (table) => ({
+    userFollowerIndex: index("user_follower_idx").on(table.userId, table.followerId),
+  }),
+);
+
 // Define relations
 export const postsRelations = relations(posts, ({ many }) => ({
   comments: many(comments),

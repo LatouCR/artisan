@@ -28,9 +28,6 @@ export default async function Feed() {
   if (!userId) return redirect("/signin");
   const user = await clerkClient.users.getUser(userId);
 
-  console.log(posts);
-  console.log(userId);
-
   let posteos;
   if (userId) {
     posteos = await db.query.posts.findMany({

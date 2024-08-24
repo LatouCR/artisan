@@ -2,7 +2,7 @@ import { db } from "src/server/db";
 import { auth } from "@clerk/nextjs/server";
 import { posts } from "src/server/db/schema";
 import { redirect } from "next/navigation";
-import { clerkClient } from "@clerk/nextjs/server";
+import { clerkClient, currentUser } from "@clerk/nextjs/server";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import ImageModal from "@/components/modals/ImageModal";
@@ -10,8 +10,7 @@ import CreatePostModal from "@/components/modals/CreatePostModal";
 import UserDisplay from "@/components/UserDisplay";
 import ActionBar from "@/components/posts/ActionBar";
 import CommentsSection from "@/components/posts/CommentsSection";
-
-import { Ellipsis } from "lucide-react";
+import MoreActions from "@/components/MoreActions";
 
 import { format } from "date-fns";
 
@@ -19,11 +18,13 @@ export const dynamic = "force-dynamic"; // force dynamic reload
 
 export default async function Feed() {
   const { userId } = auth();
+
+  const CurrentUser = await currentUser();
+  const currentId = CurrentUser?.id;
+
   if (!userId) return redirect("/signin");
   const user = await clerkClient.users.getUser(userId);
 
-  console.log(posts);
-  console.log(userId);
 
   let posteos;
   if (userId) {
@@ -50,9 +51,8 @@ export default async function Feed() {
             className="max-w-post w-full h-auto overflow-hidden bg-white rounded-sm my-2 border-neutral-400/70 border">
 
             <UserDisplay userId={post.userId} userName={post.userName}>
-              <div className="flex items-center justify-center text-neutral-300 hover:text-action cursor-pointer">
-                <Ellipsis size={16} />
-              </div>
+              <MoreActions friendId={post.userId} currentUser={currentId} userName={post.userName} />
+
             </UserDisplay>
 
             <div className="w-full mb-2">
