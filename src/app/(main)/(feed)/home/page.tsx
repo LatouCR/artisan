@@ -40,7 +40,6 @@ export default async function Feed() {
     });
   }
 
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-slate-200 text-black">
       <div className="flex items-center justify-center w-full flex-col">
