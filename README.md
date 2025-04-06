@@ -5,9 +5,6 @@ Artisan es una red social centrada en desarrolladores que permita compartir cód
 Desarrollada por:
 
  - Diego JoséLatouche Soto
- - Abdiel José García Rodríguez
- - Jose Andres Rojas Pacheco
- - Jose Daniel Hernández Fallas
 
 ## Documentacion
 
