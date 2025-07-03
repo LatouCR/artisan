@@ -1,8 +1,8 @@
 ## About
 
-Artisan es una red social centrada en desarrolladores que permita compartir códigos, tips, memes y experiencias de una manera informal y amigable, facilitando la interacción social y la colaboración en la comunidad de desarrolladores. Aplicacion Web desarrollada con [T3 Stack](https://create.t3.gg/) construida con Next.JS, Drizzle, TailwindCSS y Clerk. 
+Artisan is a developer-focused social network that allows people to share code, tips, memes, and experiences in an informal and friendly way, facilitating social interaction and collaboration within the developer community. A web application developed with [T3 Stack](https://create.t3.gg/) and built with Next.JS, Drizzle, TailwindCSS, and Clerk. 
 
-Desarrollada por:
+Developed by:
 
  - Diego JoséLatouche Soto
 
