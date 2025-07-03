@@ -6,12 +6,14 @@ Developed by:
 
  - Diego JoséLatouche Soto
 
-## Documentacion
+## Documentation
 
 - [Next.js](https://nextjs.org)
 - [Drizzle](https://orm.drizzle.team)
 - [Tailwind CSS](https://tailwindcss.com)
 - [Clerk](https://clerk.com/docs/quickstarts/nextjs)
+
+## Technologies Used
 
 ### NPM Packages
 
